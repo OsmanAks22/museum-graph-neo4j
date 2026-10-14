@@ -1,0 +1,9 @@
+# Neo4j connection files (contain URI, user and password) - never commit
+Neo4j-*.txt
+*.env
+.env
+
+# Neo4j Browser exports and local tooling
+neo4j_query_*.csv
+neo4j_query_*.txt
+.DS_Store
