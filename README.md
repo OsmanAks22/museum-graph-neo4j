@@ -4,6 +4,8 @@ This project remodels a relational art-museum database as a Neo4j property graph
 
 > Individual part (Part B) of the **7BDIN006W Big Data Theory & Practice** coursework, MSc Data Science & Analytics, University of Westminster (July 2026). Part A was a group business report and is not included.
 
+**Tech stack:** Neo4j · Cypher (variable-length paths, `OPTIONAL MATCH`, aggregation) · Oracle SQL (relational source)
+
 <p align="center">
   <img src="images/graph_overview.png" width="80%" alt="The full graph in Neo4j Browser: 36 nodes, 45 relationships">
 </p>
@@ -80,6 +82,13 @@ sql/ArtMuseumDB.sql   the relational source (Oracle SQL)
 images/               Neo4j Browser screenshots: the full graph and each query's results
 ```
 
+## Limitations
+
+- A teaching-sized graph (36 nodes), so the queries show technique rather than performance at scale.
+- Q6 forbids repeating a relationship but not a node. The four transfers Blue Landscape → Red Squares → Pop Neon → Crystal Vase → Blue Landscape form a cycle, so the 5-hop "chains" go round it (the example above ends where it began). `ORDER BY hops DESC` with `LIMIT 10` also leaves the order of equal-length chains to the database.
+
 ## Verification note
+
+On 20 October 2026 the build script was parsed and the six queries were re-implemented in plain Python over the same nodes and edges (Neo4j semantics: no repeated relationship within a path). The results match the table above: Q1 scores, Q2 reach (Crystal Vase 7; Blue Landscape, Pop Neon, Red Squares 5), Q3, the single Q4 pair, Q5 counts, and Q6 (16 paths of 3–5 hops, the longest 5 hops).
 
 On 14 October 2026 the scripts were checked statically. The check confirmed the node and relationship counts per label and type, and that every `MATCH` in the build script refers to an ID that exists. The queries were not re-executed. The only local Neo4j server is an Enterprise build that requires a licence-agreement acceptance before it will start, so the results above come from the screenshots in the original submission. The section headings of the original script were turned into `//` comments so that the files run as-is in `cypher-shell`.
